@@ -1,21 +1,14 @@
-# Como transformar o agente de Auditoria Fiscal do Trabalho em uma Skill do Claude
-
-> **Guia para quem nunca programou.**
-> Você vai pegar as instruções que já existem no arquivo `agente_definicao.md`, transformá-las em uma **Skill** do Claude (claude.ai), testar e exportar um arquivo `.zip` que funciona também em outras ferramentas.
->
-> Tempo estimado: **40 a 60 minutos**. Nenhuma linha de código é necessária.
-
----
+# Agente de Auditoria Fiscal do Trabalho como uma Skill do Claude
 
 ## Sumário
 
-**Entendendo o terreno**
+**Introdução**
 
 1. [O que você vai fazer](#1-o-que-você-vai-fazer)
 2. [O que é uma Skill, em 1 minuto](#2-o-que-é-uma-skill-em-1-minuto)
 3. [Pré-requisitos](#3-pré-requisitos)
 
-**Mão na massa**
+**Prática**
 
 4. [Passo 1 — Entender o material de origem](#passo-1--entender-o-material-de-origem)
 5. [Passo 2 — Criar a pasta e o arquivo `SKILL.md`](#passo-2--criar-a-pasta-e-o-arquivo-skillmd)
