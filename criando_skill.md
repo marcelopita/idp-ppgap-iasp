@@ -17,7 +17,7 @@
 8. [Passo 5 — Usar o próprio Claude para criar e revisar](#passo-5--usar-o-próprio-claude-para-criar-e-revisar)
 9. [Passo 6 — Empacotar em ZIP](#passo-6--empacotar-em-zip)
 10. [Passo 7 — Importar no claude.ai](#passo-7--importar-no-claudeai)
-11. [Passo 8 — Testar](#passo-8--testar)
+11. [Passo 8 — Testar](#passo-8--testar) *(inclui 8.5 — Plano B para o limite do plano Free)*
 12. [Passo 9 — Exportar e reutilizar em outras ferramentas](#passo-9--exportar-e-reutilizar-em-outras-ferramentas)
 
 **Fechando a atividade**
@@ -78,6 +78,7 @@ Isso é importante por dois motivos:
 ## 3. Pré-requisitos
 
 1. **Uma conta no claude.ai.** Skills funcionam nos planos Free, Pro, Max, Ultra, Team e Enterprise.
+   > **Atenção ao plano Free:** o limite de mensagens se esgota rápido em uso intenso. Se você usa o Free, veja o [item 8.5 — Plano B](#85-plano-b--quando-o-limite-do-plano-free-atrapalha) antes de planejar a aula.
 2. **Ativar a execução de código.** Sem isso, a área de Skills nem aparece.
    - Planos individuais (Free, Pro, Max, Ultra): vá em **Settings > Capabilities** e ative **Code execution and file creation** (em versões novas aparece como **Create and edit files**).
    - Planos Team / Enterprise: um **Owner** precisa ir em **Organization settings > Plugins & skills**, aba **Policy**, e ativar **Code execution and file creation** e **Skills**.
@@ -276,15 +277,15 @@ Listas de verificação funcionam muito bem porque obrigam o Claude a percorrer 
 
 ### Sobre os exemplos
 
-Os 12 casos do arquivo `agente_homologacao.txt` são ouro puro: eles já foram desenhados para testar exatamente as suas regras. Transforme pelo menos 6 deles em exemplos de entrada/saída dentro da Skill. O Claude aprende o padrão desejado muito mais rápido vendo um exemplo do que lendo uma regra.
+Os 12 casos do arquivo `agente_homologacao.txt` já foram desenhados para testar exatamente as suas regras. Transforme pelo menos 6 deles em exemplos de entrada/saída dentro da Skill. O Claude aprende o padrão desejado muito mais rápido vendo um exemplo do que lendo uma regra.
 
 > **Não invente números de artigo, de norma ou de processo nos exemplos.** Use apenas citações que você consegue verificar. Se tiver dúvida, escreva o exemplo com uma citação genérica e ajuste depois com o texto legal em mãos.
 
 ### Sobre a decisão de escopo (importante)
 
-O seu documento diz: *"Caso o usuário envie uma mensagem sobre qualquer assunto não relacionado a auditoria fiscal do trabalho, apenas retorne a mensagem: 'Não respondo sobre assuntos diferentes de auditoria fiscal do trabalho'."*
+O documento de instruções diz: *"Caso o usuário envie uma mensagem sobre qualquer assunto não relacionado a auditoria fiscal do trabalho, apenas retorne a mensagem: 'Não respondo sobre assuntos diferentes de auditoria fiscal do trabalho'."*
 
-Isso não cobre o caso de **mensagem mista** (ex.: o teste 3, que mistura cotação do dólar com o art. 59 da CLT). Decida agora e escreva a regra na Skill. Sugestão adotada neste guia:
+Isso não cobre o caso de **mensagem mista** (ex.: o teste 3, que mistura cotação do dólar com o art. 59 da CLT). Sugestão adotada neste guia:
 
 > "Se a mensagem misturar um tema permitido com um tema não permitido, responda apenas a parte permitida e informe que não trata do restante."
 
@@ -431,6 +432,34 @@ Abra uma **conversa nova** (Claude B) e rode os casos do `agente_homologacao.txt
 3. Seja explícito no pedido: *"Use a skill auditoria-fiscal-trabalho para responder."*
 4. Reenvie o ZIP com a descrição ajustada.
 
+### 8.5 Plano B — quando o limite do plano Free atrapalha
+
+O plano Free tem limite de mensagens que se esgota rápido em uso intenso e se renova a cada poucas horas. O fluxo completo deste guia (gerar a Skill no próprio Claude, revisar, rodar os 12 casos e iterar os erros) **não cabe** no limite Free. Neste caso, adapte assim:
+
+**1. Separe o que consome mensagens do que não consome.**
+
+| Etapa | Consome mensagens? |
+|---|---|
+| Passos 1 a 4 (entender, criar pasta, escrever o `SKILL.md` à mão) | ❌ Não |
+| Passos 6 e 7 (empacotar e importar) | ❌ Não |
+| Passo 5 (gerar e revisar com o Claude) | ✅ Sim |
+| Passo 8 (testar os casos) | ✅ Sim |
+
+Ou seja: **a construção da Skill é trabalho de editor de texto** e pode ser feita inteiramente sem gastar o limite. Só o teste precisa do Claude.
+
+**2. Reduza a homologação para 4 casos.** Em vez dos 12, teste os casos **1, 3, 6 e 8** da tabela do item 8.2 — eles cobrem os quatro comportamentos importantes:
+
+| Caso | O que valida |
+|---|---|
+| 1 | Bloqueio LGPD |
+| 3 | Mensagem mista (recusa parcial + resposta parcial) |
+| 6 | Impessoalidade |
+| 8 | Risco excessivo + aviso de risco |
+
+**3. Tenha o gabarito à mão.** O [Anexo A](#anexo-a--skillmd-completo-copiar-e-colar) é o `SKILL.md` pronto. Quem bater no limite pode comparar seu arquivo com o gabarito e faz a autoavaliação.
+
+**4. Distribua o teste ao longo do tempo.** O limite do Free se renova periodicamente. Teste em casa dentro da janela de renovação, em vez de concentrar tudo na aula.
+
 ---
 
 ## Passo 9 — Exportar e reutilizar em outras ferramentas
@@ -515,6 +544,7 @@ Anote em um arquivo de texto o que mudou em cada versão. Isso ajuda muito quand
 | O Claude inventa um artigo de lei | Falta de instrução explícita | Reforce na seção "Nunca faça": *nunca invente número de artigo ou de norma* |
 | O Claude pesquisou na internet | Busca ativa na conversa | Desative a busca na web na conversa e reforce a regra na Skill |
 | A Skill funciona no claude.ai mas não na API | Superfícies não sincronizam | Suba o mesmo ZIP na outra ferramenta |
+| Bati no limite de mensagens do plano Free | Uso intenso na criação e nos testes | Veja o [item 8.5 — Plano B](#85-plano-b--quando-o-limite-do-plano-free-atrapalha): construa a Skill no editor, teste só os 4 casos-chave e use o gabarito do Anexo A |
 
 ---
 
