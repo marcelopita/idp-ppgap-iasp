@@ -42,7 +42,7 @@ flowchart LR
     E --> G["Testar com os<br/>12 casos de homologação"]
 ```
 
-Em palavras simples: você vai **organizar suas instruções em um arquivo de texto com um formato específico**, colocar esse arquivo dentro de uma pasta, compactar a pasta em `.zip` e subir esse `.zip` no Claude. A partir daí, o Claude passa a aplicar essas regras automaticamente sempre que o assunto for auditoria fiscal do trabalho.
+Você vai **organizar suas instruções em um arquivo de texto com um formato específico**, colocar esse arquivo dentro de uma pasta, compactar a pasta em `.zip` e subir esse `.zip` no Claude. A partir daí, o Claude passa a aplicar essas regras automaticamente sempre que o assunto for auditoria fiscal do trabalho.
 
 ---
 
@@ -121,11 +121,12 @@ O nome da pasta **precisa ser igual** ao campo `name` que você vai escrever no 
 - **números**
 - **hífen** (`-`) para separar palavras
 
-Nada de acentos, espaços, maiúsculas ou underline.
+Nada de acentos, espaços, maiúsculas, underline, hífen no início ou no fim, nem dois hífens seguidos. E **nada de `anthropic` ou `claude`** no nome (veja o [item 3.1](#31-campo-name-obrigatório)).
 
 ✅ `auditoria-fiscal-trabalho`
 ❌ `Auditoria Fiscal do Trabalho`
 ❌ `auditoria_fiscal_trabalho`
+❌ `claude-auditoria`
 
 ### 2.2 Estrutura de pastas
 
@@ -150,17 +151,17 @@ auditoria-fiscal-trabalho/
 
 ### 2.3 Criar os arquivos
 
-**No seu computador (macOS):**
+**No Windows:**
+1. Crie a pasta `auditoria-fiscal-trabalho`.
+2. Abra o **Bloco de Notas** e use **Salvar como**.
+3. Em "Tipo", escolha **Todos os arquivos** e digite o nome `SKILL.md` (com as aspas, se necessário, para o Windows não adicionar `.txt`).
+
+**No macOS:**
 1. Abra o **Finder** e vá até a pasta do laboratório.
 2. Clique com o botão direito → **Nova Pasta** → nomeie como `auditoria-fiscal-trabalho`.
 3. Abra um editor de texto simples (**TextEdit** em modo texto puro, ou o **VS Code**).
 4. Salve o arquivo dentro da pasta com o nome exato **`SKILL.md`**.
    - No TextEdit: **Formatar > Converter para Texto Simples** antes de salvar, e desmarque "Ocultar extensão" para garantir que o nome ficou `SKILL.md` e não `SKILL.md.txt`.
-
-**No Windows:**
-1. Crie a pasta `auditoria-fiscal-trabalho`.
-2. Abra o **Bloco de Notas**, cole o conteúdo e use **Salvar como**.
-3. Em "Tipo", escolha **Todos os arquivos** e digite o nome `SKILL.md` (com as aspas, se necessário, para o Windows não adicionar `.txt`).
 
 > **Sobre maiúsculas no nome do arquivo:** o padrão da especificação Agent Skills é `SKILL.md` (tudo maiúsculo). É o que usaremos. Se o claude.ai reclamar de arquivo ausente no upload, renomeie para `skill.md` (minúsculo) e tente de novo.
 
@@ -181,10 +182,29 @@ description: Apoia Auditores Fiscais do Trabalho em análise de legislação tra
 
 | Regra | Valor |
 |---|---|
-| Tamanho máximo | 64 caracteres |
-| Caracteres permitidos | letras minúsculas, números e hífen |
-| Proibido | tags XML, as palavras `anthropic` e `claude` |
-| Deve ser igual a | o nome da pasta |
+| Tamanho | de 1 a 64 caracteres |
+| Caracteres permitidos | apenas letras minúsculas (`a-z`), números (`0-9`) e hífen (`-`) |
+| Não pode começar nem terminar com hífen | ❌ `-auditoria`, ❌ `auditoria-` |
+| Não pode ter dois hífens seguidos | ❌ `auditoria--fiscal` |
+| Proibido | tags XML e as palavras reservadas `anthropic` e `claude` |
+| Deve ser igual a | o nome da pasta que contém o `SKILL.md` |
+
+**Sobre as palavras reservadas:** sim, `anthropic` e `claude` são proibidas no campo `name`. A regra está na documentação oficial do Claude (Agent Skills). A especificação aberta publicada em [agentskills.io](https://agentskills.io/specification.md) não lista essas duas palavras, mas lista todas as outras restrições da tabela. Como o objetivo é que a Skill funcione em qualquer ferramenta, **siga a regra mais restritiva**: evite `anthropic` e `claude` no nome.
+
+> ⚠️ **Cuidado com o efeito colateral:** como o `name` deve ser igual ao nome da pasta, você também **não pode** nomear a pasta com essas palavras. Ou seja, `claude-auditoria` está fora — use `auditoria-fiscal-trabalho`.
+
+**Exemplos:**
+
+| `name` | Válido? | Por quê |
+|---|---|---|
+| `auditoria-fiscal-trabalho` | ✅ | minúsculas e hífens simples |
+| `auditoria-fiscal-trabalho-2` | ✅ | números são permitidos |
+| `Auditoria-Fiscal` | ❌ | tem letras maiúsculas |
+| `auditoria_fiscal` | ❌ | underline não é permitido |
+| `auditoria fiscal` | ❌ | espaço não é permitido |
+| `-auditoria` | ❌ | começa com hífen |
+| `auditoria--fiscal` | ❌ | dois hífens seguidos |
+| `claude-auditoria` | ❌ | usa palavra reservada |
 
 ### 3.2 Campo `description` (obrigatório) — o mais importante de todos
 
@@ -197,13 +217,13 @@ Uma boa descrição responde a duas perguntas:
 
 Escreva sempre em **terceira pessoa** ("Apoia...", "Analisa..."), nunca "Eu ajudo você a...".
 
-| ✅ Bom | ❌ Ruim |
-|---|---|
-| "Apoia Auditores Fiscais do Trabalho em análise de legislação trabalhista, fiscalização e autos de infração. Use quando o tema for auditoria fiscal do trabalho, CLT, NRs ou direitos trabalhistas." | "Ajuda com documentos." |
-| | "Processa dados." |
-| | "Faz coisas com arquivos." |
+| ✅ Bom | ❌ Ruim | Por quê |
+|---|---|---|
+| "Apoia Auditores Fiscais do Trabalho em análise de legislação trabalhista, fiscalização e autos de infração. Use quando o tema for auditoria fiscal do trabalho, CLT, NRs ou direitos trabalhistas." | "Ajuda com documentos." | O bom diz **o que faz** e **quando usar**, com palavras-chave que o usuário digita. O ruim não permite ao Claude decidir nada. |
+| "Analisa autos de infração e prazos de defesa na fiscalização do trabalho. Use quando o usuário mencionar auto de infração, notificação, prazo de defesa ou recurso administrativo." | "Processa dados." | O bom lista os **gatilhos** concretos. O ruim é genérico demais e dispararia em qualquer conversa — ou em nenhuma. |
+| "Orienta sobre normas regulamentadoras de segurança e saúde no trabalho. Use quando o tema for NR, EPI, insalubridade ou periculosidade." | "Faz coisas com arquivos." | O bom delimita o **domínio**. O ruim não descreve nem a tarefa nem o contexto de uso. |
 
-> **Limite de tamanho:** a documentação técnica permite até 1.024 caracteres, mas a interface do claude.ai indica **200 caracteres**. Fique abaixo de 200 para não ter surpresa. A descrição acima tem 194 caracteres.
+> **Limite de tamanho:** a documentação técnica permite até 1.024 caracteres, mas a interface do claude.ai indica **200 caracteres**. Fique abaixo de 200 para não ter surpresa. Os três exemplos acima têm, respectivamente, 194, 178 e 135 caracteres.
 
 ### 3.3 Campo `dependencies` (opcional)
 
@@ -486,7 +506,8 @@ Anote em um arquivo de texto o que mudou em cada versão. Isso ajuda muito quand
 | Skills aparecem cinza / desabilitadas | Execução de código desligada na organização | Fale com o Owner da organização |
 | Erro no upload: "arquivo ausente" | Nome do arquivo errado | Renomeie para `SKILL.md` (ou `skill.md`) |
 | Erro no upload: "nome da pasta não corresponde" | Pasta ≠ campo `name` | Deixe os dois idênticos |
-| Erro no upload: "caracteres inválidos" | Maiúsculas, acentos ou espaços no `name` | Use só minúsculas, números e hífen |
+| Erro no upload: "caracteres inválidos" | Maiúsculas, acentos, espaços, underline ou hífen mal posicionado no `name` | Use só minúsculas, números e hífen simples (sem começar/terminar com hífen) |
+| Erro no upload: "palavra reservada" | `name` contém `anthropic` ou `claude` | Renomeie a pasta e o campo `name` sem essas palavras |
 | Erro no upload: ZIP grande demais | Arquivos desnecessários dentro | Remova imagens e arquivos temporários |
 | O Claude não usa a Skill | `description` vaga | Reescreva incluindo as palavras-chave do seu dia a dia |
 | O Claude usa a Skill na hora errada | `description` ampla demais | Restrinja o "quando usar" |
