@@ -24,7 +24,7 @@
 
 13. [Checklist final](#13-checklist-final)
 14. [Problemas comuns e soluções](#14-problemas-comuns-e-soluções)
-15. [Anexo A — `SKILL.md` completo (copiar e colar)](#anexo-a--skillmd-completo-copiar-e-colar)
+15. [Anexo A — `SKILL.md` completo (copiar e colar)](#anexo-a--skillmd-completo-copiar-e-colar) *(já configurado para os três PDFs de referência)*
 16. [Anexo B — Prompts prontos](#anexo-b--prompts-prontos)
 17. [Anexo C — Glossário](#anexo-c--glossário)
 
@@ -71,7 +71,7 @@ Isso é importante por dois motivos:
 | **Instruções personalizadas** | Valem para *todas* as conversas | Preferências gerais ("responda em português") |
 | **Skill** | Liga sozinha quando o assunto aparece, em qualquer conversa | Você tem um **procedimento** específico e repetitivo |
 
-> **Dica prática:** o ideal é combinar. Coloque as **leis e normas** em um **Projeto** (nível 3 da Skill pode apontar para eles) e coloque o **procedimento de atendimento** na **Skill**.
+> **Dica prática:** o ideal é combinar. Coloque as **leis e normas** em um **Projeto** (nível 3 da Skill pode apontar para eles) e coloque o **procedimento de atendimento** na **Skill**. Neste laboratório, os três documentos legais principais (CLT, PL 2338/2023 e Portaria 672/2021) vão **dentro da própria Skill**, na subpasta `referencias/` — veja o item 2.2.1.
 
 ---
 
@@ -148,7 +148,32 @@ auditoria-fiscal-trabalho/
     └── modelo-auto.md    ← modelos de documento (opcional)
 ```
 
-> **Regra de ouro:** mantenha as referências a **um nível de profundidade**. O `SKILL.md` aponta direto para `REFERENCIA.md`. Evite `SKILL.md` → `A.md` → `B.md`, porque o Claude pode ler só um pedaço do arquivo do meio.
+### 2.2.1 Incluir os documentos legais na Skill (neste laboratório)
+
+Nesta atividade, a Skill vai **carregar os próprios documentos legais** dentro da pasta. Assim, quando o Claude precisar citar um artigo, ele lê o texto oficial em vez de confiar só na memória, o que reduz muito o risco de inventar número de artigo.
+
+Copie os três PDFs do laboratório para dentro da pasta, em uma subpasta `referencias/`:
+
+```
+auditoria-fiscal-trabalho/
+├── SKILL.md
+└── referencias/
+    ├── Del5452compilado.PDF                          ← CLT consolidada (Decreto-Lei 5.452/1943)
+    ├── PL-2338-2023.pdf                              ← Projeto de Lei sobre IA (base da classificação de risco)
+    └── portaria-no-672-de-8-de-novembro-de-2021.pdf  ← Portaria MTE 672/2021
+```
+
+**Como copiar (Windows Explorer):** selecione os três PDFs → `Ctrl+C` → abra a pasta da Skill → crie a subpasta `referencias` → `Ctrl+V`.
+
+**Como copiar (macOS Finder):** selecione os três PDFs no laboratório → `Cmd+C` → abra a pasta `auditoria-fiscal-trabalho` → crie a subpasta `referencias` → `Cmd+V`.
+
+> **Por que uma subpasta `referencias/`?** É a convenção da especificação Agent Skills para documentação de apoio. Mantém o `SKILL.md` na raiz (onde o Claude procura primeiro) e agrupa os documentos longos em um só lugar.
+
+> **Como o Claude lê os PDFs:** dentro da Skill, o Claude usa a execução de código para abrir e extrair o texto dos PDFs. Por isso a execução de código precisa estar ativada (item 3 dos pré-requisitos). PDFs digitalizados como imagem (sem texto selecionável) podem não ser lidos — se isso acontecer, anexe o trecho relevante diretamente na conversa.
+
+> **Tamanho do ZIP:** com os três PDFs, o ZIP deixa de ter "poucos KB" e passa a ter alguns MB. Isso é normal e aceito pelo claude.ai. Ainda assim, não coloque PDFs gigantes e desnecessários — só os documentos que a Skill realmente vai citar.
+
+> **Regra:** mantenha as referências a **um nível de profundidade**. O `SKILL.md` aponta direto para `REFERENCIA.md`. Evite `SKILL.md` → `A.md` → `B.md`, porque o Claude pode ler só um pedaço do arquivo do meio.
 
 ### 2.3 Criar os arquivos
 
@@ -291,12 +316,14 @@ Isso não cobre o caso de **mensagem mista** (ex.: o teste 3, que mistura cotaç
 
 ---
 
-## Passo 5 — Usar o próprio Claude para criar e revisar
+## Passo 5 (OPCIONAL) — Usar o próprio Claude para criar e revisar
 
 Você não precisa escrever tudo à mão. O Claude entende o formato de Skill nativamente. Use o padrão **Claude A / Claude B**:
 
 - **Claude A** = a conversa em que você **constrói e revisa** a Skill.
 - **Claude B** = uma conversa **nova**, com a Skill já carregada, em que você **testa** o comportamento.
+
+Esse passo é opcional, porque você pode gerar o arquivo SKILL.md a mão. O plano free do Claude pode não ser suficiente para executar todos os passos, devido ao limite de uso.
 
 ### 5.1 Gerar a primeira versão
 
@@ -356,14 +383,14 @@ auditoria-fiscal-trabalho.zip
 
 ### 6.2 Como compactar
 
+**Windows (Explorer):**
+1. Selecione a **pasta** `auditoria-fiscal-trabalho`.
+2. Botão direito → **Enviar para** → **Pasta compactada (zipada)**.
+
 **macOS (Finder):**
 1. Selecione a **pasta** `auditoria-fiscal-trabalho` (não o arquivo de dentro dela).
 2. Clique com o botão direito → **Compactar "auditoria-fiscal-trabalho"**.
 3. Pronto: aparece `auditoria-fiscal-trabalho.zip`.
-
-**Windows (Explorer):**
-1. Selecione a **pasta** `auditoria-fiscal-trabalho`.
-2. Botão direito → **Enviar para** → **Pasta compactada (zipada)**.
 
 **Linux:**
 ```bash
@@ -376,7 +403,8 @@ zip -r auditoria-fiscal-trabalho.zip auditoria-fiscal-trabalho
 - [ ] O arquivo se chama `SKILL.md` (não `SKILL.md.txt`).
 - [ ] O `SKILL.md` está **dentro** da pasta, não solto na raiz do ZIP.
 - [ ] O ZIP não está protegido por senha.
-- [ ] O ZIP não é grande demais (uma Skill de texto tem poucos KB).
+- [ ] O ZIP não é grande demais (uma Skill só de texto tem poucos KB; com os três PDFs de referência, alguns MB são normais).
+- [ ] Os três PDFs estão dentro da subpasta `referencias/` (não soltos na raiz da pasta).
 
 ---
 
@@ -501,6 +529,7 @@ Anote em um arquivo de texto o que mudou em cada versão. Isso ajuda muito quand
 **Estrutura**
 - [ ] Pasta chamada `auditoria-fiscal-trabalho`
 - [ ] Arquivo `SKILL.md` dentro da pasta
+- [ ] Subpasta `referencias/` com os três PDFs (CLT, PL 2338/2023, Portaria 672/2021)
 - [ ] Frontmatter com `name` e `description`
 - [ ] `name` igual ao nome da pasta, em minúsculas com hífens
 - [ ] `description` com menos de 200 caracteres, dizendo **o que faz** e **quando usar**
@@ -511,6 +540,7 @@ Anote em um arquivo de texto o que mudou em cada versão. Isso ajuda muito quand
 - [ ] Lista de PII proibidas completa
 - [ ] Mensagem de bloqueio LGPD copiada literalmente
 - [ ] Regra de não pesquisar na internet
+- [ ] Instrução para confirmar artigos da CLT, PL 2338/2023 e Portaria 672/2021 nos PDFs da pasta `referencias/`
 - [ ] Regra de impessoalidade com base no art. 37 da CF/88
 - [ ] Classificação de risco com base no art. 13 do PL 2338/2023
 - [ ] Aviso de risco copiado literalmente
@@ -537,7 +567,9 @@ Anote em um arquivo de texto o que mudou em cada versão. Isso ajuda muito quand
 | Erro no upload: "nome da pasta não corresponde" | Pasta ≠ campo `name` | Deixe os dois idênticos |
 | Erro no upload: "caracteres inválidos" | Maiúsculas, acentos, espaços, underline ou hífen mal posicionado no `name` | Use só minúsculas, números e hífen simples (sem começar/terminar com hífen) |
 | Erro no upload: "palavra reservada" | `name` contém `anthropic` ou `claude` | Renomeie a pasta e o campo `name` sem essas palavras |
-| Erro no upload: ZIP grande demais | Arquivos desnecessários dentro | Remova imagens e arquivos temporários |
+| Erro no upload: ZIP grande demais | Arquivos desnecessários dentro | Remova imagens e arquivos temporários. Os três PDFs de referência podem ficar — alguns MB são aceitos |
+| O Claude não encontra os PDFs da pasta `referencias/` | PDFs soltos na raiz da pasta, ou subpasta com outro nome | Confira a estrutura do item 2.2.1: os PDFs devem estar em `referencias/` com os nomes exatos listados |
+| O Claude cita um artigo errado da CLT ou do PL 2338 | Não abriu o PDF antes de responder | Reforce no `SKILL.md` (seção 3.2 do Anexo A): confirmar no PDF antes de citar |
 | O Claude não usa a Skill | `description` vaga | Reescreva incluindo as palavras-chave do seu dia a dia |
 | O Claude usa a Skill na hora errada | `description` ampla demais | Restrinja o "quando usar" |
 | O Claude ignora uma regra | Regra escondida no meio do texto | Mova para o início, use **MAIÚSCULAS** ou "SEMPRE"/"NUNCA" |
@@ -552,6 +584,7 @@ Anote em um arquivo de texto o que mudou em cada versão. Isso ajuda muito quand
 
 > Este é o **gabarito**. Copie o bloco abaixo, cole no arquivo `SKILL.md` e ajuste conforme a sua realidade institucional.
 > Nos exemplos, `[AVISO LEGAL]` é uma abreviação do aviso completo definido no item 4.
+> Este gabarito pressupõe que os três PDFs (CLT, PL 2338/2023 e Portaria 672/2021) estão na subpasta `referencias/` da Skill — veja o item 2.2.1.
 
 ````markdown
 ---
@@ -604,8 +637,14 @@ Substitua `dado_sensivel` pelo tipo encontrado (ex.: `nome completo`, `matrícul
 
 Não use busca na internet, navegação ou ferramentas de pesquisa. Baseie-se exclusivamente em:
 
-1. documentos anexados à conversa ou ao projeto;
-2. legislação e normas oficiais que você já conhece (CLT, NRs, Constituição, leis).
+1. **os documentos legais que acompanham esta Skill**, na pasta `referencias/`:
+   - `Del5452compilado.PDF` — CLT (Decreto-Lei 5.452/1943, texto compilado);
+   - `PL-2338-2023.pdf` — Projeto de Lei 2338/2023 sobre inteligência artificial;
+   - `portaria-no-672-de-8-de-novembro-de-2021.pdf` — Portaria MTE 672/2021;
+2. documentos anexados à conversa ou ao projeto;
+3. legislação e normas oficiais que você já conhece (Constituição, NRs, outras leis).
+
+**Ao citar um artigo da CLT, do PL 2338/2023 ou da Portaria 672/2021, abra o PDF correspondente na pasta `referencias/` e confirme o texto e o número do artigo antes de responder.** Nunca cite de memória um artigo desses três documentos sem ter confirmado no arquivo.
 
 Se a resposta exigir um dado que você não tem, diga que não há fonte interna disponível e indique qual documento o usuário deve anexar.
 
@@ -708,7 +747,9 @@ Saída: "A fiscalização do cumprimento das normas de segurança e saúde no tr
 Você vai me ajudar a transformar o documento anexado em uma Skill no padrão Agent Skills.
 
 Regras:
-1. Crie uma pasta chamada auditoria-fiscal-trabalho com um arquivo SKILL.md dentro.
+1. Crie uma pasta chamada auditoria-fiscal-trabalho com um arquivo SKILL.md dentro e uma
+   subpasta referencias/ com três PDFs: Del5452compilado.PDF (CLT), PL-2338-2023.pdf e
+   portaria-no-672-de-8-de-novembro-de-2021.pdf.
 2. O frontmatter deve ter apenas os campos name e description. O name deve ser
    auditoria-fiscal-trabalho. A description deve ter no máximo 200 caracteres, estar em
    terceira pessoa e dizer o que a Skill faz e quando deve ser usada.
@@ -718,9 +759,12 @@ Regras:
 4. Copie LITERALMENTE todas as mensagens fixas do documento original (frase de recusa de
    escopo, mensagem de bloqueio LGPD, aviso de classificação de risco e aviso legal).
    Não reescreva essas mensagens com suas palavras.
-5. Mantenha o arquivo com menos de 500 linhas e não explique o que é CLT, LGPD ou auto de
+5. Na seção de fontes internas, instrua que ao citar artigos da CLT, do PL 2338/2023 ou
+   da Portaria 672/2021 o texto e o número do artigo devem ser confirmados no PDF
+   correspondente da pasta referencias/ antes de responder.
+6. Mantenha o arquivo com menos de 500 linhas e não explique o que é CLT, LGPD ou auto de
    infração — eu já sei.
-6. Não invente números de artigo, de norma ou de processo.
+7. Não invente números de artigo, de norma ou de processo.
 ```
 
 ### Prompt 2 — Revisar e enxugar
@@ -758,11 +802,12 @@ Regras:
 ```
 Agora:
 1. Crie a pasta auditoria-fiscal-trabalho com o arquivo SKILL.md dentro, já com todas as
-   revisões e exemplos.
+   revisões e exemplos, e a subpasta referencias/ com os três PDFs
+   (Del5452compilado.PDF, PL-2338-2023.pdf e portaria-no-672-de-8-de-novembro-de-2021.pdf).
 2. Compacte a pasta em um arquivo auditoria-fiscal-trabalho.zip, garantindo que a pasta
    seja a raiz do ZIP (e não os arquivos soltos).
 3. Me dê o link para baixar o arquivo .zip.
-4. Liste o conteúdo do ZIP para eu conferir a estrutura.
+4. Liste o conteúdo do ZIP para eu conferir a estrutura, incluindo os três PDFs.
 ```
 
 ### Prompt 5 — Testar (Claude B)
